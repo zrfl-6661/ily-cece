@@ -1,93 +1,130 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Untuk Cece 💖</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puzzle Cece 💖</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #ffe6f0;
+      background: #fff0f5;
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow: hidden;
-      text-align: center;
-    }
-    .container {
       text-align: center;
       padding: 20px;
     }
-    .photo {
-      width: 200px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px #ff99cc;
-      margin-bottom: 20px;
-    }
-    .typing-text {
-      font-size: 1.3rem;
+    h1 {
       color: #d63384;
-      white-space: pre-wrap;
-      border-right: 2px solid #d63384;
-      overflow: hidden;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto 20px;
-      text-align: left;
     }
-    audio {
-      display: block;
-      margin: 20px auto;
+    #game {
+      margin-top: 20px;
+    }
+    canvas {
+      border: 4px solid #ff69b4;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff99cc;
     }
     .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
       background-color: #ff69b4;
       color: white;
-      padding: 10px 20px;
       border: none;
       border-radius: 10px;
       font-size: 1rem;
       cursor: pointer;
-      text-decoration: none;
-      margin-top: 15px;
-      display: inline-block;
-      box-shadow: 0 0 10px #ff99cc;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Foto Cece" class="photo" />
-    <div class="typing-text" id="typingText"></div>
-    <audio controls autoplay loop>
-      <source src="https://docs.google.com/uc?export=download&id=1bIbZXsd_nJhSZvwjb-2FWcHm3SvVW9UM" type="audio/mpeg" />
-      Browser kamu tidak mendukung pemutar musik 😢
-    </audio>
-    <a href="puzzle.html" class="btn">Main Puzzle Cece 🧩💖</a>
-  </div>
+  <h1>Temukan Cece 💘</h1>
+  <canvas id="memoryCanvas" width="400" height="400"></canvas>
+  <br>
+  <button class="btn" onclick="resetGame()">Ulangi Game</button>  <script>
+    const canvas = document.getElementById('memoryCanvas');
+    const ctx = canvas.getContext('2d');
+    const size = 4;
+    const total = size * size;
+    let cards = [];
+    let flipped = [];
+    let matched = [];
+    let img = new Image();
+    img.src = "https://i.postimg.cc/LXTbPzBk/1748588938046.jpg";
 
-  <script>
-    const text = `Hai Cece 🌸
+    function init() {
+      cards = [];
+      flipped = [];
+      matched = [];
+      for (let i = 0; i < total / 2; i++) {
+        cards.push(i);
+        cards.push(i);
+      }
+      shuffle(cards);
+      drawBoard();
+    }
 
-Aku cuma mau bilang...
-Kamu itu lucu banget, imut banget, dan aku bersyukur banget bisa punya kamu 🥹💖
-Makasih udah selalu ada untukku, jadi semangatku setiap hari.
-
-I love youuuu! 💕`;
-
-    let i = 0;
-    const speed = 50;
-    function typeWriter() {
-      if (i < text.length) {
-        document.getElementById("typingText").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
     }
-    window.onload = typeWriter;
-  </script>
-</body>
+
+    function drawBoard() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const tileSize = canvas.width / size;
+      for (let i = 0; i < total; i++) {
+        const x = (i % size) * tileSize;
+        const y = Math.floor(i / size) * tileSize;
+        if (matched.includes(i) || flipped.includes(i)) {
+          drawImage(cards[i], x, y, tileSize);
+        } else {
+          ctx.fillStyle = '#ffc0cb';
+          ctx.fillRect(x, y, tileSize, tileSize);
+        }
+      }
+    }
+
+    function drawImage(index, x, y, size) {
+      const cols = 4;
+      const rows = 2;
+      const sx = (index % cols) * (img.width / cols);
+      const sy = Math.floor(index / cols) * (img.height / rows);
+      const sw = img.width / cols;
+      const sh = img.height / rows;
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, size, size);
+    }
+
+    canvas.addEventListener('click', (e) => {
+      const tileSize = canvas.width / size;
+      const x = Math.floor(e.offsetX / tileSize);
+      const y = Math.floor(e.offsetY / tileSize);
+      const index = y * size + x;
+
+      if (flipped.length < 2 && !flipped.includes(index) && !matched.includes(index)) {
+        flipped.push(index);
+        drawBoard();
+        if (flipped.length === 2) {
+          setTimeout(() => {
+            if (cards[flipped[0]] === cards[flipped[1]]) {
+              matched.push(...flipped);
+            }
+            flipped = [];
+            drawBoard();
+            if (matched.length === total) {
+              setTimeout(() => {
+                alert("Yeay! Cece berhasil ditemukan 💖");
+                window.location.href = "hadiah.html";
+              }, 500);
+            }
+          }, 700);
+        }
+      }
+    });
+
+    function resetGame() {
+      init();
+    }
+
+    img.onload = () => {
+      init();
+    };
+  </script></body>
 </html>
