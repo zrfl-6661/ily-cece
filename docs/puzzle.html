@@ -2,129 +2,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Puzzle Cece 💖</title>
+  <title>Memory Game Cece 💖</title>
   <style>
     body {
-      background: #fff0f5;
+      background: linear-gradient(to right, #ffe4e1, #fff0f5);
       font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
+      color: #d63384;
       padding: 20px;
     }
     h1 {
-      color: #d63384;
+      font-size: 2.5em;
+      margin-bottom: 10px;
     }
-    #game {
-      margin-top: 20px;
+    p.instructions {
+      font-size: 1.2em;
+      margin-bottom: 20px;
     }
-    canvas {
-      border: 4px solid #ff69b4;
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .card {
+      width: 80px;
+      height: 80px;
+      background-color: #ffb6c1;
       border-radius: 10px;
-      box-shadow: 0 0 10px #ff99cc;
-    }
-    .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      font-size: 2em;
+      box-shadow: 0 0 10px #ff99cc;
+      overflow: hidden;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .matched {
+      background-color: #90ee90 !important;
+      cursor: default;
     }
   </style>
 </head>
 <body>
-  <h1>Temukan Cece 💘</h1>
-  <canvas id="memoryCanvas" width="400" height="400"></canvas>
-  <br>
-  <button class="btn" onclick="resetGame()">Ulangi Game</button>  <script>
-    const canvas = document.getElementById('memoryCanvas');
-    const ctx = canvas.getContext('2d');
-    const size = 4;
-    const total = size * size;
-    let cards = [];
-    let flipped = [];
-    let matched = [];
-    let img = new Image();
-    img.src = "https://i.postimg.cc/LXTbPzBk/1748588938046.jpg";
+  <h1>Memory Game Cece 💘</h1>
+  <p class="instructions">Coba cocokkan semua pasangan foto Cece yang sama! Klik 2 kartu untuk membukanya. Kalau cocok, mereka akan tetap terbuka 💖</p>  <div class="game-container" id="game"></div>  <script>
+    const imageUrl = 'https://i.postimg.cc/LXTbPzBk/1748588938046.jpg';
+    const images = Array(8).fill(imageUrl).flatMap(i => [i, i]);
 
-    function init() {
-      cards = [];
-      flipped = [];
-      matched = [];
-      for (let i = 0; i < total / 2; i++) {
-        cards.push(i);
-        cards.push(i);
-      }
-      shuffle(cards);
-      drawBoard();
-    }
+    let gameContainer = document.getElementById('game');
+    let shuffled = images.sort(() => 0.5 - Math.random());
+    let selected = [];
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
+    shuffled.forEach((url, i) => {
+      let div = document.createElement('div');
+      div.classList.add('card');
+      div.dataset.url = url;
+      div.dataset.index = i;
 
-    function drawBoard() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const tileSize = canvas.width / size;
-      for (let i = 0; i < total; i++) {
-        const x = (i % size) * tileSize;
-        const y = Math.floor(i / size) * tileSize;
-        if (matched.includes(i) || flipped.includes(i)) {
-          drawImage(cards[i], x, y, tileSize);
-        } else {
-          ctx.fillStyle = '#ffc0cb';
-          ctx.fillRect(x, y, tileSize, tileSize);
-        }
-      }
-    }
+      div.addEventListener('click', () => {
+        if (div.classList.contains('matched') || selected.includes(div)) return;
 
-    function drawImage(index, x, y, size) {
-      const cols = 4;
-      const rows = 2;
-      const sx = (index % cols) * (img.width / cols);
-      const sy = Math.floor(index / cols) * (img.height / rows);
-      const sw = img.width / cols;
-      const sh = img.height / rows;
-      ctx.drawImage(img, sx, sy, sw, sh, x, y, size, size);
-    }
+        let img = document.createElement('img');
+        img.src = url;
+        div.innerHTML = '';
+        div.appendChild(img);
+        selected.push(div);
 
-    canvas.addEventListener('click', (e) => {
-      const tileSize = canvas.width / size;
-      const x = Math.floor(e.offsetX / tileSize);
-      const y = Math.floor(e.offsetY / tileSize);
-      const index = y * size + x;
-
-      if (flipped.length < 2 && !flipped.includes(index) && !matched.includes(index)) {
-        flipped.push(index);
-        drawBoard();
-        if (flipped.length === 2) {
+        if (selected.length === 2) {
           setTimeout(() => {
-            if (cards[flipped[0]] === cards[flipped[1]]) {
-              matched.push(...flipped);
+            if (selected[0].dataset.url === selected[1].dataset.url) {
+              selected[0].classList.add('matched');
+              selected[1].classList.add('matched');
+            } else {
+              selected[0].innerHTML = '';
+              selected[1].innerHTML = '';
             }
-            flipped = [];
-            drawBoard();
-            if (matched.length === total) {
+            selected = [];
+
+            if (document.querySelectorAll('.matched').length === images.length) {
               setTimeout(() => {
-                alert("Yeay! Cece berhasil ditemukan 💖");
-                window.location.href = "hadiah.html";
+                alert('Yeay kamu berhasil Cece! 💗');
+                window.location.href = 'hadiah.html';
               }, 500);
             }
-          }, 700);
+          }, 600);
         }
-      }
+      });
+
+      gameContainer.appendChild(div);
     });
-
-    function resetGame() {
-      init();
-    }
-
-    img.onload = () => {
-      init();
-    };
   </script></body>
 </html>
