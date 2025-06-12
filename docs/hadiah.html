@@ -31,7 +31,28 @@
       box-shadow: 0 0 20px #ffb6c1;
     }
     audio {
+      display: none;
+    }
+    .btn-play {
+      display: inline-block;
       margin-top: 30px;
+      background-color: #ff69b4;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .btn-play:hover {
+      background-color: #ff85c1;
+    }
+    .thankyou {
+      font-size: 1.1em;
+      margin-top: 30px;
+      color: #b03060;
     }
   </style>
 </head>
@@ -39,21 +60,23 @@
   <div class="container">
     <h1>Cece Sayang 💕</h1>
     <p>Terima kasih sudah bermain puzzle tadi 😆 Sekarang dengerin lagu ini sambil liat foto kamu yaa... kamu lucu banget! 🥹💘</p>
-    <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Cece"><audio id="bgm" loop>
+    <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Cece"><button class="btn-play" onclick="playMusic()">Klik di sini untuk dengar lagunya 🎶</button>
+
+<p class="thankyou">Semoga kamu senyum-senyum sendiri pas liat ini ya! Aku sayang kamu selalu 💞</p>
+
+<audio id="bgm" loop>
   <source src="https://cdn.jsdelivr.net/gh/zrfl-6661/ily-cece@main/docs/lepi.mp3" type="audio/mpeg">
   Browser kamu tidak mendukung audio 🙈
 </audio>
 
   </div>  <script>
-    const audio = document.getElementById('bgm');
-
-    function tryPlay() {
-      audio.play().catch(() => {
-        console.log('Autoplay gagal, klik lagi ya.');
+    function playMusic() {
+      const audio = document.getElementById('bgm');
+      audio.play().then(() => {
+        console.log('Music started');
+      }).catch((e) => {
+        alert('Klik sekali lagi kalau belum terdengar ya 😅');
       });
     }
-
-    window.addEventListener('click', tryPlay);
-    document.addEventListener('DOMContentLoaded', tryPlay);
   </script></body>
 </html>
