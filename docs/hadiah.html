@@ -40,16 +40,20 @@
     <h1>Cece Sayang 💕</h1>
     <p>Terima kasih sudah bermain puzzle tadi 😆 Sekarang dengerin lagu ini sambil liat foto kamu yaa... kamu lucu banget! 🥹💘</p>
     <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Cece"><audio id="bgm" loop>
-  <source src="https://raw.githubusercontent.com/zrfl-6661/ily-cece/refs/heads/main/docs/lepi.mp3" type="audio/mpeg">
+  <source src="https://cdn.jsdelivr.net/gh/zrfl-6661/ily-cece@main/docs/lepi.mp3" type="audio/mpeg">
   Browser kamu tidak mendukung audio 🙈
 </audio>
 
   </div>  <script>
-    // Auto play after user interaction (browser requirement)
-    window.addEventListener('click', function playAudioOnce() {
-      const audio = document.getElementById('bgm');
-      audio.play();
-      window.removeEventListener('click', playAudioOnce);
-    });
+    const audio = document.getElementById('bgm');
+
+    function tryPlay() {
+      audio.play().catch(() => {
+        console.log('Autoplay gagal, klik lagi ya.');
+      });
+    }
+
+    window.addEventListener('click', tryPlay);
+    document.addEventListener('DOMContentLoaded', tryPlay);
   </script></body>
 </html>
