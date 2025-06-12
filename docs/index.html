@@ -27,21 +27,6 @@
       box-shadow: 0 0 15px #ff99cc;
       margin-bottom: 20px;
     }
-    .typing-text {
-      font-size: 1.3rem;
-      color: #d63384;
-      white-space: pre-wrap;
-      border-right: 2px solid #d63384;
-      overflow: hidden;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto 20px;
-      text-align: left;
-    }
-    audio {
-      display: block;
-      margin: 20px auto;
-    }
     .btn {
       background-color: #ff69b4;
       color: white;
@@ -51,7 +36,7 @@
       font-size: 1rem;
       cursor: pointer;
       text-decoration: none;
-      margin-top: 15px;
+      margin-top: 20px;
       display: inline-block;
       box-shadow: 0 0 10px #ff99cc;
     }
@@ -59,31 +44,10 @@
 </head>
 <body>
   <div class="container">
+    <h1>Hai Cece 💞</h1>
     <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Foto Cece" class="photo" />
-    <div class="typing-text" id="typingText"></div>
-    <audio controls autoplay loop>
-      <source src="https://docs.google.com/uc?export=download&id=1bIbZXsd_nJhSZvwjb-2FWcHm3SvVW9UM" type="audio/mpeg" />
-      Browser kamu tidak mendukung pemutar musik 😢
-    </audio>
-    <a href="puzzle.html" class="btn">Main Puzzle Cece 🧩💖</a>
-  </div>  <script>
-    const text = `Hai Cece 🌸
-
-Aku cuma mau bilang...
-Kamu itu lucu banget, imut banget, dan aku bersyukur banget bisa punya kamu 🥹💖
-Makasih udah selalu ada untukku, jadi semangatku setiap hari.
-
-I love youuuu! 💕`;
-
-    let i = 0;
-    const speed = 50;
-    function typeWriter() {
-      if (i < text.length) {
-        document.getElementById("typingText").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
-      }
-    }
-    window.onload = typeWriter;
-  </script></body>
+    <p>Kalau Cece sayang aku... ayo main puzzle dulu 🧩💕</p>
+    <a href="puzzle.html" class="btn">Main Sekarang 💘</a>
+  </div>
+</body>
 </html>
