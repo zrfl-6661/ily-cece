@@ -106,13 +106,17 @@
 
     function isSolved() {
       for (let i = 0; i < 8; i++) {
-        let row = Math.floor(i / 3);
-        let col = i % 3;
-        if (tiles[i].style.backgroundPosition !== `-${col * 100}px -${row * 100}px`) {
+        let expectedRow = Math.floor(i / 3);
+        let expectedCol = i % 3;
+        let pos = `-${expectedCol * 100}px -${expectedRow * 100}px`;
+        if (
+          !tiles[i].style.backgroundPosition ||
+          tiles[i].style.backgroundPosition.replace(/\s+/g, '') !== pos.replace(/\s+/g, '')
+        ) {
           return false;
         }
       }
-      return true;
+      return tiles[8].classList.contains('empty');
     }
 
     createTiles();
