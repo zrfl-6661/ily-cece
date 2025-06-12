@@ -49,8 +49,10 @@
 
     function createTiles() {
       for (let i = 0; i < 9; i++) {
-        let tile = document.createElement('div');
+        const tile = document.createElement('div');
         tile.classList.add('tile');
+        tile.dataset.index = i;
+
         if (i === 8) {
           tile.classList.add('empty');
           tile.style.background = 'none';
@@ -58,7 +60,9 @@
           let row = Math.floor(i / 3);
           let col = i % 3;
           tile.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+          tile.dataset.correct = `${col},${row}`;
         }
+
         tiles.push(tile);
         puzzle.appendChild(tile);
       }
@@ -87,6 +91,7 @@
     function swapTiles(i, j) {
       [tiles[i].className, tiles[j].className] = [tiles[j].className, tiles[i].className];
       [tiles[i].style.backgroundPosition, tiles[j].style.backgroundPosition] = [tiles[j].style.backgroundPosition, tiles[i].style.backgroundPosition];
+      [tiles[i].dataset.correct, tiles[j].dataset.correct] = [tiles[j].dataset.correct, tiles[i].dataset.correct];
     }
 
     puzzle.addEventListener('click', (e) => {
@@ -106,15 +111,10 @@
 
     function isSolved() {
       for (let i = 0; i < 8; i++) {
-        let expectedRow = Math.floor(i / 3);
-        let expectedCol = i % 3;
-        let pos = `-${expectedCol * 100}px -${expectedRow * 100}px`;
-        if (
-          !tiles[i].style.backgroundPosition ||
-          tiles[i].style.backgroundPosition.replace(/\s+/g, '') !== pos.replace(/\s+/g, '')
-        ) {
-          return false;
-        }
+        const row = Math.floor(i / 3);
+        const col = i % 3;
+        const correct = `${col},${row}`;
+        if (tiles[i].dataset.correct !== correct) return false;
       }
       return tiles[8].classList.contains('empty');
     }
