@@ -1,53 +1,56 @@
 <!DOCTYPE html><html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Untuk Cece 💖</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: #ffe6f0;
+      background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow: hidden;
       text-align: center;
+      padding: 50px;
+      color: #d63384;
     }
-    .container {
-      text-align: center;
-      padding: 20px;
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
     }
-    .photo {
-      width: 200px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px #ff99cc;
-      margin-bottom: 20px;
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
     }
     .btn {
+      padding: 15px 30px;
       background-color: #ff69b4;
       color: white;
-      padding: 10px 20px;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
+      border-radius: 15px;
+      font-size: 1.2rem;
       text-decoration: none;
-      margin-top: 20px;
-      display: inline-block;
       box-shadow: 0 0 10px #ff99cc;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #ff85c1;
+      transform: scale(1.05);
+    }
+    .heart {
+      animation: pulse 1.5s infinite;
+      color: #ff1493;
+      font-size: 2rem;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Hai Cece 💞</h1>
-    <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Foto Cece" class="photo" />
-    <p>Kalau Cece sayang aku... ayo main puzzle dulu 🧩💕</p>
-    <a href="puzzle.html" class="btn">Main Sekarang 💘</a>
-  </div>
+  <h1>Hai Cece 🌸</h1>
+  <p>Aku punya kejutan kecil buat kamu... tapi kamu harus main game dulu ya 🧩✨</p>
+  <div class="heart">❤️</div>
+  <br>
+  <a href="puzzle.html" class="btn">Mulai Game 💘</a>
 </body>
 </html>
