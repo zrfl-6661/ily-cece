@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory Game Cece 💖</title>
+  <title>Puzzle Geser Cece 💖</title>
   <style>
     body {
       background: linear-gradient(to right, #ffe4e1, #fff0f5);
@@ -15,89 +15,107 @@
       font-size: 2.5em;
       margin-bottom: 10px;
     }
-    p.instructions {
-      font-size: 1.2em;
-      margin-bottom: 20px;
-    }
-    .game-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      max-width: 400px;
+    #puzzle {
+      width: 300px;
+      height: 300px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 2px;
+      border: 4px solid #d63384;
     }
-    .card {
-      width: 80px;
-      height: 80px;
-      background-color: #ffb6c1;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 2em;
-      box-shadow: 0 0 10px #ff99cc;
-      overflow: hidden;
-    }
-    .card img {
+    .tile {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      border-radius: 10px;
+      background-image: url('https://i.postimg.cc/LXTbPzBk/1748588938046.jpg');
+      background-size: 300px 300px;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    .matched {
-      background-color: #90ee90 !important;
+    .empty {
+      background: #fff0f5;
       cursor: default;
     }
   </style>
 </head>
 <body>
-  <h1>Memory Game Cece 💘</h1>
-  <p class="instructions">Coba cocokkan semua pasangan foto Cece yang sama! Klik 2 kartu untuk membukanya. Kalau cocok, mereka akan tetap terbuka 💖</p>  <div class="game-container" id="game"></div>  <script>
-    const imageUrl = 'https://i.postimg.cc/LXTbPzBk/1748588938046.jpg';
-    const images = Array(8).fill(imageUrl).flatMap(i => [i, i]);
+  <h1>Puzzle Geser Cece 💘</h1>
+  <p class="instructions">Susun ulang kepingan foto Cece hingga menjadi gambar utuh! Klik kepingan di sebelah kotak kosong untuk memindahkannya 💖</p>
+  <div id="puzzle"></div>  <script>
+    const puzzle = document.getElementById('puzzle');
+    let tiles = [];
+    let emptyIndex = 8;
 
-    let gameContainer = document.getElementById('game');
-    let shuffled = images.sort(() => 0.5 - Math.random());
-    let selected = [];
-
-    shuffled.forEach((url, i) => {
-      let div = document.createElement('div');
-      div.classList.add('card');
-      div.dataset.url = url;
-      div.dataset.index = i;
-
-      div.addEventListener('click', () => {
-        if (div.classList.contains('matched') || selected.includes(div)) return;
-
-        let img = document.createElement('img');
-        img.src = url;
-        div.innerHTML = '';
-        div.appendChild(img);
-        selected.push(div);
-
-        if (selected.length === 2) {
-          setTimeout(() => {
-            if (selected[0].dataset.url === selected[1].dataset.url) {
-              selected[0].classList.add('matched');
-              selected[1].classList.add('matched');
-            } else {
-              selected[0].innerHTML = '';
-              selected[1].innerHTML = '';
-            }
-            selected = [];
-
-            if (document.querySelectorAll('.matched').length === images.length) {
-              setTimeout(() => {
-                alert('Yeay kamu berhasil Cece! 💗');
-                window.location.href = 'hadiah.html';
-              }, 500);
-            }
-          }, 600);
+    function createTiles() {
+      for (let i = 0; i < 9; i++) {
+        let tile = document.createElement('div');
+        tile.classList.add('tile');
+        if (i === 8) {
+          tile.classList.add('empty');
+          tile.style.background = 'none';
+        } else {
+          let row = Math.floor(i / 3);
+          let col = i % 3;
+          tile.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
         }
-      });
+        tiles.push(tile);
+        puzzle.appendChild(tile);
+      }
+    }
 
-      gameContainer.appendChild(div);
+    function shuffle() {
+      for (let i = 0; i < 100; i++) {
+        const neighbors = getMovableIndexes(emptyIndex);
+        const rand = neighbors[Math.floor(Math.random() * neighbors.length)];
+        swapTiles(emptyIndex, rand);
+        emptyIndex = rand;
+      }
+    }
+
+    function getMovableIndexes(index) {
+      const moves = [];
+      const row = Math.floor(index / 3);
+      const col = index % 3;
+      if (row > 0) moves.push(index - 3);
+      if (row < 2) moves.push(index + 3);
+      if (col > 0) moves.push(index - 1);
+      if (col < 2) moves.push(index + 1);
+      return moves;
+    }
+
+    function swapTiles(i, j) {
+      [tiles[i].className, tiles[j].className] = [tiles[j].className, tiles[i].className];
+      [tiles[i].style.backgroundPosition, tiles[j].style.backgroundPosition] = [tiles[j].style.backgroundPosition, tiles[i].style.backgroundPosition];
+    }
+
+    puzzle.addEventListener('click', (e) => {
+      const index = tiles.indexOf(e.target);
+      if (index === -1) return;
+      if (getMovableIndexes(emptyIndex).includes(index)) {
+        swapTiles(index, emptyIndex);
+        emptyIndex = index;
+        if (isSolved()) {
+          setTimeout(() => {
+            alert('Yay! Kamu berhasil menyusun foto Cece 💕');
+            window.location.href = 'hadiah.html';
+          }, 300);
+        }
+      }
     });
+
+    function isSolved() {
+      for (let i = 0; i < 8; i++) {
+        let row = Math.floor(i / 3);
+        let col = i % 3;
+        if (tiles[i].style.backgroundPosition !== `-${col * 100}px -${row * 100}px`) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    createTiles();
+    shuffle();
   </script></body>
 </html>
