@@ -3,54 +3,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Untuk Cece 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      text-align: center;
-      padding: 50px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Patrick Hand', cursive;
+      background: linear-gradient(to right, #ffe4e1, #fff0f5);
       color: #d63384;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
+      font-size: 3em;
+      margin: 0.5em 0;
     }
     p {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
+      font-size: 1.4em;
+      max-width: 600px;
+      margin-bottom: 2em;
+      padding: 0 20px;
     }
-    .btn {
-      padding: 15px 30px;
+    a.button {
       background-color: #ff69b4;
       color: white;
-      border: none;
-      border-radius: 15px;
-      font-size: 1.2rem;
+      padding: 15px 30px;
+      border-radius: 40px;
       text-decoration: none;
-      box-shadow: 0 0 10px #ff99cc;
-      transition: all 0.3s ease;
+      font-size: 1.3em;
+      transition: background 0.3s ease;
     }
-    .btn:hover {
+    a.button:hover {
       background-color: #ff85c1;
-      transform: scale(1.05);
     }
-    .heart {
-      animation: pulse 1.5s infinite;
-      color: #ff1493;
-      font-size: 2rem;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+    img {
+      width: 200px;
+      border-radius: 20px;
+      margin-bottom: 1em;
+      box-shadow: 0 0 15px #ff99cc;
     }
   </style>
 </head>
 <body>
-  <h1>Hai Cece 🌸</h1>
-  <p>Aku punya kejutan kecil buat kamu... tapi kamu harus main game dulu ya 🧩✨</p>
-  <div class="heart">❤️</div>
-  <br>
-  <a href="puzzle.html" class="btn">Mulai Game 💘</a>
+  <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Cece">
+  <h1>Hai Cece 💌</h1>
+  <p>Aku punya sesuatu yang spesial buat kamu. Tapi... kamu harus jawab beberapa pertanyaan dulu ya 😝💗</p>
+  <a href="hadiah.html" class="button" onclick="playAudio()">Mulai Sekarang!</a><audio id="bgm" src="https://raw.githubusercontent.com/zrfl-6661/ily-cece/refs/heads/main/docs/lepi.mp3" autoplay loop></audio>
+
 </body>
 </html>
