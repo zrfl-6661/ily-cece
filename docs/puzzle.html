@@ -11,6 +11,7 @@
       color: #d63384;
       text-align: center;
       padding: 40px 20px;
+      overflow-x: hidden;
     }
     h1 {
       font-size: 2.5em;
@@ -20,7 +21,7 @@
       font-size: 1.3em;
       margin: 20px 0;
     }
-    .answers button {
+    .answers button, #playMusic, .next-btn, .reply-btn {
       background-color: #ff69b4;
       color: white;
       border: none;
@@ -31,17 +32,13 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-    .answers button:hover {
+    .answers button:hover, #playMusic:hover, .next-btn:hover, .reply-btn:hover {
       background-color: #ff85c1;
     }
     #result {
       font-size: 1.2em;
       margin-top: 30px;
       color: #b03060;
-    }
-    .next-btn {
-      display: none;
-      margin-top: 20px;
     }
     .photo {
       display: none;
@@ -51,23 +48,75 @@
       max-width: 280px;
       border-radius: 20px;
       box-shadow: 0 0 20px #ffb6c1;
+      margin-bottom: 20px;
+    }
+    .typewriter {
+      font-size: 1.2em;
+      white-space: pre-line;
+      display: inline-block;
+      overflow: hidden;
+      border-right: 2px solid #d63384;
+      animation: typing 4s steps(40, end), blink 0.8s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      from, to { border-color: transparent; }
+      50% { border-color: #d63384; }
+    }
+    .falling-heart {
+      position: fixed;
+      top: -30px;
+      font-size: 24px;
+      animation: fall 6s linear infinite;
+      color: #ff69b4;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(120vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Kuis Bucin Untuk Cece 💘</h1>  <div id="quiz">
+  <h1>Kuis Bucin Untuk Cece 💘</h1><button id="playMusic" onclick="playAudio()">🎶 Klik untuk putar lagu</button> <audio id="bgm" src="https://raw.githubusercontent.com/zrfl-6661/ily-cece/refs/heads/main/docs/lepi.mp3" loop></audio> <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b02fae1bc.mp3?filename=pop-94319.mp3"></audio> <audio id="successSound" src="https://cdn.pixabay.com/download/audio/2022/03/22/audio_cdf57a8fae.mp3?filename=correct-answer-2-96174.mp3"></audio>
+
+  <div id="quiz">
     <div class="question" id="question">Seberapa lucu Cece hari ini?</div>
     <div class="answers">
-      <button onclick="nextQuestion()">A. Banget 😚</button>
-      <button onclick="nextQuestion()">B. Banget banget 😍</button>
-      <button onclick="nextQuestion()">C. Semua di atas benar 😆</button>
+      <button onclick="nextQuestion(); playClick()">A. Banget 😚</button>
+      <button onclick="nextQuestion(); playClick()">B. Banget banget 😍</button>
+      <button onclick="nextQuestion(); playClick()">C. Semua di atas benar 😆</button>
     </div>
-    <button class="next-btn" id="nextBtn" onclick="showResult()">Lanjut ➡️</button>
+    <button class="next-btn" id="nextBtn" onclick="showResult(); playSuccess()">Lanjut ➡️</button>
   </div>  <div id="result"></div>
   <div class="photo" id="photo">
-    <p>Kamu emang paling lucu deh, Cece 💖</p>
     <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Cece">
+    <div class="typewriter" id="message">
+      "Cece... aku suka semua tentang kamu.
+      Tatapanmu, suaramu, bahkan caramu ngambek.
+      Kamu selalu jadi alasanku semangat setiap hari.
+      Jangan berubah ya, karena aku suka kamu yang sekarang, persis seperti ini. 💗"
+    </div>
+    <br>
+    <button class="reply-btn" onclick="alert('Yeay! Aku juga 😚')">Aku juga suka kamu! 💌</button>
   </div>  <script>
+    function playAudio() {
+      document.getElementById('bgm').play();
+      document.getElementById('playMusic').style.display = 'none';
+    }
+
+    function playClick() {
+      document.getElementById('clickSound').play();
+    }
+
+    function playSuccess() {
+      document.getElementById('successSound').play();
+    }
+
     function nextQuestion() {
       document.getElementById('question').innerText = 'Seberapa sayang aku sama Cece?';
       const btns = document.querySelectorAll('.answers button');
@@ -75,7 +124,10 @@
       btns[1].innerText = 'B. Banyak 🥹';
       btns[2].innerText = 'C. Gak bisa dijelasin 🥰';
 
-      btns.forEach(btn => btn.onclick = showNextBtn);
+      btns.forEach(btn => btn.onclick = () => {
+        showNextBtn();
+        playClick();
+      });
     }
 
     function showNextBtn() {
@@ -87,6 +139,20 @@
       document.getElementById('quiz').style.display = 'none';
       document.getElementById('result').innerText = 'Kamu lulus ujian bucin 💕';
       document.getElementById('photo').style.display = 'block';
+      playSuccess();
+      rainHearts();
+    }
+
+    function rainHearts() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'falling-heart';
+        heart.innerText = '💖';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }
     }
   </script></body>
 </html>
