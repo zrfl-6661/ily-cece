@@ -21,7 +21,7 @@
       font-size: 1.3em;
       margin: 20px 0;
     }
-    .answers button, #playMusic, .next-btn, .reply-btn {
+    .answers button, .reply-btn {
       background-color: #ff69b4;
       color: white;
       border: none;
@@ -32,7 +32,7 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-    .answers button:hover, #playMusic:hover, .next-btn:hover, .reply-btn:hover {
+    .answers button:hover, .reply-btn:hover {
       background-color: #ff85c1;
     }
     #result {
@@ -81,8 +81,8 @@
     }
   </style>
 </head>
-<body>
-  <h1>Kuis Bucin Untuk Cece 💘</h1><button id="playMusic" onclick="playAudio()">🎶 Klik untuk putar lagu</button> <audio id="bgm" src="https://raw.githubusercontent.com/zrfl-6661/ily-cece/refs/heads/main/docs/lepi.mp3" loop></audio> <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b02fae1bc.mp3?filename=pop-94319.mp3"></audio> <audio id="successSound" src="https://cdn.pixabay.com/download/audio/2022/03/22/audio_cdf57a8fae.mp3?filename=correct-answer-2-96174.mp3"></audio>
+<body onload="playAudio()">
+  <h1>Kuis Bucin Untuk Cece 💘</h1><audio id="bgm" src="https://raw.githubusercontent.com/zrfl-6661/ily-cece/refs/heads/main/docs/lepi.mp3" autoplay loop></audio> <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b02fae1bc.mp3?filename=pop-94319.mp3"></audio> <audio id="successSound" src="https://cdn.pixabay.com/download/audio/2022/03/22/audio_cdf57a8fae.mp3?filename=correct-answer-2-96174.mp3"></audio>
 
   <div id="quiz">
     <div class="question" id="question">Seberapa lucu Cece hari ini?</div>
@@ -91,7 +91,6 @@
       <button onclick="nextQuestion(); playClick()">B. Banget banget 😍</button>
       <button onclick="nextQuestion(); playClick()">C. Semua di atas benar 😆</button>
     </div>
-    <button class="next-btn" id="nextBtn" onclick="showResult(); playSuccess()">Lanjut ➡️</button>
   </div>  <div id="result"></div>
   <div class="photo" id="photo">
     <img src="https://i.postimg.cc/LXTbPzBk/1748588938046.jpg" alt="Cece">
@@ -106,7 +105,6 @@
   </div>  <script>
     function playAudio() {
       document.getElementById('bgm').play();
-      document.getElementById('playMusic').style.display = 'none';
     }
 
     function playClick() {
@@ -125,14 +123,9 @@
       btns[2].innerText = 'C. Gak bisa dijelasin 🥰';
 
       btns.forEach(btn => btn.onclick = () => {
-        showNextBtn();
         playClick();
+        showResult();
       });
-    }
-
-    function showNextBtn() {
-      document.querySelector('.answers').style.display = 'none';
-      document.getElementById('nextBtn').style.display = 'inline-block';
     }
 
     function showResult() {
